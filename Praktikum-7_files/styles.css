@@ -1,0 +1,141 @@
+﻿.ma1 {
+	background: lavenderblush;
+	border-color: silver;
+	border-width: 5px;
+	border-style: solid;
+}
+.ma2 {
+	background: lightcyan;
+	border-color: silver;
+	border-width: 0px;
+	border-style: solid;
+}
+.mleisc2m {
+	color: white;
+}
+/* ---- Unsichtbares Zeichen ---------------------------------------------- */
+
+.kleinunsichtbar {
+	color: white;
+	font-size: xx-small;
+}
+
+}
+
+/* ---- Definition vo Farben ---------------------------------------------- */
+
+.weiss {
+	background-color: #FFF;
+}
+.extremhellgrau {
+	background-color: whitesmoke;
+}
+.hellgrau {
+	background-color: #D3D9dD;
+}
+.hellblau {
+	background-color: #D5E5EF;
+	color: #044a71;
+}
+.mittelblau {
+	background-color: #009DE0;
+	color: #D5E5EF;
+}
+.mittelblau2 {
+	background-color: #319CCE;
+}
+.dunkelblau {
+	background-color: #06689A;
+}
+.dunkelblau2 {
+	background-color: #044a71;
+}
+.gruengelb {
+	background-color: #D5E500;
+}
+.hellgruengelb {
+	background-color: #f8ff99;
+}
+/* Helferchen ------------------------------------------------------- */
+.vspace10 {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.vspace50 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+.vspace50 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+/* tabularische Karten ------------------------------------------------------- */
+.card-header {
+	text-align: left;
+	padding:0.5rem;
+}
+.card-block {
+	text-align: left;
+	padding:0.5rem;
+}
+/* Navigationbalken Hintergrundfarbe ------------------------------------------------------- */
+.navbar-inverse {
+	background: #06689A;
+}
+/* ------------------------------------------------------- */
+.navbar {
+	padding: 0.1em; /* Padding des Navbars festlegen */
+}
+/* a hover ------------------------------------------------------- */
+.inhaltscontainer a:hover {
+	background: #f8ff99; !important /* Padding des Navbars festlegen */
+}
+/* Navigationbalken hover ------------------------------------------------------- */
+#containerNavbar .navbar-nav a:hover {
+	background-color: #D5E500;
+}
+#containerNavbar .dropdown-menu a:hover {
+	background-color: #D5E500;
+}
+/* Navigationbalken hover, dann dropdown-MenÃ¼ Ã¶ffnen------------------------------------------------- */
+#containerNavbar li:hover div {
+	display: block;
+}
+/* dropdown-MenÃ¼ anpassen */
+#containerNavbar .dropdown-menu {
+	margin: 0em;
+	background-color:white;
+	border: 1px solid #06689A;
+}   
+/* Tab hover ------------------------------------------------------- */
+.card-header-tabs a:hover {
+	background-color: #D5E500;   /* gruengelb  */
+}
+.card-header-tabs .nav-link.active {
+	background-color: #f8ff99;   /* hellgruengelb  */
+}
+/*  */
+/* ------------------------------------------------------- */
+.NavContainer {
+	border-width: 0.4em;
+	border-style: solid;
+	}	
+
+.ContentContainer {
+	border-color: #D5E5EF;
+	border-width: 0.1em;
+	border-style: solid;
+	margin-top: 12px;	
+}	
+.hintergrundlinks {
+	background-image: url('../images/null-eins.gif');
+}
+/*
+
+
+
+*/
+
+
+
+

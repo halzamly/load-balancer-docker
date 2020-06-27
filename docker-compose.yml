@@ -1,0 +1,99 @@
+version: '3'
+
+services:
+  website1:
+    build: 
+      context: ./website1
+      dockerfile: Dockerfile
+    ports:
+      - "9711:80"
+    environment:
+      COLOR: '#A9D0F5'
+      NAME: web-site1
+    volumes:
+      - "./htmlphp:/var/www/html/"
+    networks:
+      - frontend
+  website2:
+    build: 
+      context: ./website2
+      dockerfile: Dockerfile
+    ports:
+      - "9712:80"
+    environment:
+      COLOR: '#F5A9A9'
+      NAME: web-site2
+    volumes:
+      - "./htmlphp:/var/www/html/"
+    networks:
+      - frontend
+  website3:
+    build: 
+      context: ./website3
+      dockerfile: Dockerfile
+    ports:
+      - "9713:80"
+    environment:
+      COLOR: '#D0F5A9'
+      NAME: web-site3
+    volumes:  
+      - "./htmlphp:/var/www/html/"
+    networks:
+      - frontend
+
+  nginx:
+    build: 
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+     - "8080:80"
+    links:
+     - php
+    networks:
+     - frontend
+  php:
+    image: php:7-fpm
+    networks:
+      - frontend
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - mariadb
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: netlab
+    ports:
+      - '8081:80'
+    networks:
+      - frontend
+    volumes:
+      - phpmyadmin_data:/bitnami
+
+  mariadb:
+    image: "library/mariadb"
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'mariadb_data:/bitnami'
+    environment:
+      MYSQL_ROOT_PASSWORD: netlab
+      MYSQL_DATABASE: bigdata
+      MYSQL_USER: root
+      MYSQL_PASSWORD: netlab
+    networks:
+      - frontend
+
+networks:
+  frontend:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    driver: local
+  phpmyadmin_data:
+    driver: local
+
+

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" class=" " lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="http://superuser.openstack.org/xmlrpc.php">
+<link rel="icon" type="image/x-icon" href="http://superuser.openstack.org/wp-content/themes/superuser/images/favicon.ico">
+<!--
+<script type="text/javascript" src="//use.typekit.net/kwc8mda.js"></script>
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+-->
+<link rel="stylesheet" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/default.css">
+<script async="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a_003.html"></script><script type="text/javascript" async="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/cc.js"></script><script async="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/analytics.js"></script><script src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<title>How to run a load-balanced service in Docker containers - OpenStack Superuser</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v4.9 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="This tutorial from Cloud&amp;Heat shows you how to set up a load-balanced service deployed on Docker containers using OpenStack VMs.">
+<link rel="canonical" href="http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to run a load-balanced service in Docker containers - OpenStack Superuser">
+<meta property="og:description" content="This tutorial from Cloud&amp;Heat shows you how to set up a load-balanced service deployed on Docker containers using OpenStack VMs.">
+<meta property="og:url" content="http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/">
+<meta property="og:site_name" content="OpenStack Superuser">
+<meta property="article:publisher" content="https://www.facebook.com/openstack/">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="tutorial">
+<meta property="article:tag" content="VMs">
+<meta property="article:section" content="How-To">
+<meta property="article:published_time" content="2016-09-16T06:02:18-06:00">
+<meta property="article:modified_time" content="2016-12-20T13:39:25-06:00">
+<meta property="og:updated_time" content="2016-12-20T13:39:25-06:00">
+<meta property="og:image" content="http://superuser.openstack.org/wp-content/uploads/2016/09/13203272814_10d92356d5_h.jpg">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="1071">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:description" content="This tutorial from Cloud&amp;Heat shows you how to set up a load-balanced service deployed on Docker containers using OpenStack VMs.">
+<meta name="twitter:title" content="How to run a load-balanced service in Docker containers - OpenStack Superuser">
+<meta name="twitter:site" content="@OpenStack">
+<meta name="twitter:image" content="http://superuser.openstack.org/wp-content/uploads/2016/09/13203272814_10d92356d5_h.jpg">
+<meta name="twitter:creator" content="@OpenStack">
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="http://superuser.openstack.org/">
+<link rel="dns-prefetch" href="http://s0.wp.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="OpenStack Superuser » Feed" href="http://superuser.openstack.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="OpenStack Superuser » Comments Feed" href="http://superuser.openstack.org/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="OpenStack Superuser » How to run a load-balanced service in Docker containers Comments Feed" href="http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/superuser.openstack.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=20170523"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,56826,8203,55356,56819),0,0),c=j.toDataURL(),b===c&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55358,56794,8205,9794,65039),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55358,56794,8203,9794,65039),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="pmzez-page-lazy-loader-css-active-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/nprogress.css" type="text/css" media="all">
+<link rel="stylesheet" id="responsive-lightbox-swipebox-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/swipebox.css" type="text/css" media="all">
+<link rel="stylesheet" id="share-links-genericons-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/genericons.css" type="text/css" media="all">
+<link rel="stylesheet" id="share-links-default-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/default_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="swiftype-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/autocomplete.css" type="text/css" media="all">
+<link rel="stylesheet" id="superuser-style-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="jetpack_css-css" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/jetpack.css" type="text/css" media="all">
+<!-- This site uses the Google Analytics by MonsterInsights plugin v6.2.0 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+<script type="text/javascript" data-cfasync="false">
+	/* Function to detect opted out users */
+	function __gaTrackerIsOptedOut() {
+		return document.cookie.indexOf(disableStr + '=true') > -1;
+	}
+
+	/* Disable tracking if the opt-out cookie exists. */
+	var disableStr = 'ga-disable-UA-17511903-15';
+	if ( __gaTrackerIsOptedOut() ) {
+		window[disableStr] = true;
+	}
+
+	/* Opt-out function */
+	function __gaTrackerOptout() {
+	  document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+	  window[disableStr] = true;
+	}
+
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
+
+	__gaTracker('create', 'UA-17511903-15', 'auto');
+	__gaTracker('set', 'forceSSL', true);
+	__gaTracker('send','pageview');
+</script>
+<!-- / Google Analytics by MonsterInsights -->
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/jquery.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/jquery-migrate.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/nprogress.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var related_posts_js_options = {"post_heading":"h4"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/related-posts.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/jquery_002.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var rlArgs = {"script":"swipebox","selector":"lightbox","customEvents":"","activeGalleries":"1","animation":"1","hideCloseButtonOnMobile":"0","removeBarsOnMobile":"0","hideBars":"1","hideBarsDelay":"5000","videoMaxWidth":"1080","useSVG":"1","loopAtEnd":"0","woocommerce_gallery":"0"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/front.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var swiftypeParams = {"engineKey":"1sjGD2_erowcjizw4BLs"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/install_swiftype.js"></script>
+<link rel="https://api.w.org/" href="http://superuser.openstack.org/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://superuser.openstack.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://superuser.openstack.org/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 4.8.1">
+<link rel="shortlink" href="http://superuser.openstack.org/?p=2739">
+<link rel="alternate" type="application/json+oembed" href="http://superuser.openstack.org/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fsuperuser.openstack.org%2Farticles%2Frun-load-balanced-service-docker-containers-openstack%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://superuser.openstack.org/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fsuperuser.openstack.org%2Farticles%2Frun-load-balanced-service-docker-containers-openstack%2F&amp;format=xml">
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		
+<script type="text/javascript" async="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/embed.js"></script><script async="" type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/count_002.js"></script><link rel="prefetch" as="style" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a_data/lounge.css"><link rel="prefetch" as="script" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a_data/common.js"><link rel="prefetch" as="script" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a_data/lounge.js"><link rel="prefetch" as="script" href="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a_data/config.js"><script src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/alfalfa.js" async="" charset="UTF-8"></script></head>
+
+<body class="post-template-default single single-post postid-2739 single-format-standard group-blog">
+<div id="page" class="site">
+	<header class="page-header">
+		<div class="page-header-container container">
+			<div class="logo">
+				<a href="http://superuser.openstack.org/">
+					<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/superuser-logo.svg" class="logomark" alt="&gt; Superuser">
+				</a>
+			</div>
+
+			<nav>
+				<div class="menu-main-menu-container"><ul id="primary-nav" class="menu"><li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://superuser.openstack.org/section/user-stories/">User Stories</a></li>
+<li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://superuser.openstack.org/section/how-to/">How-To</a></li>
+<li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://superuser.openstack.org/section/superuser-tv/">Superuser TV</a></li>
+<li id="menu-item-71" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71"><a href="http://superuser.openstack.org/awards/">Awards</a></li>
+<li id="menu-item-74" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-74"><a href="http://superuser.openstack.org/about/">About</a></li>
+<li><a href="http://superuser.openstack.org/" onclick="__gaTracker('send', 'event', 'outbound-menu', 'http://superuser.openstack.org/', '');" id="search-link" class="search-link"><img class="icon-search" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/search-icon-white.svg" alt="Search icon white"></a></li></ul></div>				<a href="#primary-nav" class="nav-toggle">Menu</a>
+			</nav>
+			
+			<div id="search-container" class="container search-container icon-search-hidden">
+				<form role="search" method="get" id="nav-search-form" class="search-form" action="http://superuser.openstack.org/">
+					<img class="nav-search-icon icon-search" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/search-icon-navy.svg" alt="Search icon navy">
+					<input required="required" placeholder="Type to search" name="s" id="nav-search-text-box" class="search-text-field" autocomplete="off" type="text">
+					<input value="Search" class="button" type="submit">
+				</form>
+			</div>
+		</div>
+	</header>
+	<div id="content" class="site-content">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+			
+<div class="article-header" style="background-image: url(http://superuser.openstack.org/wp-content/uploads/2016/09/13203272814_10d92356d5_h-1500x1071.jpg);">
+	<div class="overlay"></div>
+	<div class="content">
+		<div class="container">
+	  		<div class="grid">
+				<div class="col col--2-of-2">
+					<div class="cover-image">
+						<img alt="How to run a load-balanced service in Docker containers" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/13203272814_10d92356d5_h-595x398.jpg">
+					</div>
+					<div class="article-category">
+						<span>How-To</span>
+					</div>
+					<h1>
+						<a href="http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/">How to run a load-balanced service in Docker containers</a>
+					</h1>
+				</div>
+				<div class="col col--2-of-3">
+					<div class="article-rider">
+						<p>This tutorial from Cloud&amp;Heat shows you how to set up a 
+load-balanced service deployed on Docker containers using OpenStack VMs.</p>
+					</div>
+				</div>
+				<div class="col col--1-of-3">
+					<div class="article-metadata">
+						<div class="author-name"><img alt="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/df4717dffc99e14633358825d9e4f7f2_002.png" srcset="http://1.gravatar.com/avatar/df4717dffc99e14633358825d9e4f7f2?s=90&amp;d=http%3A%2F%2Fsuperuser.openstack.org%2Fwp-content%2Fthemes%2Fsuperuser%2Fimages%2Fsocial-icon-bracket.png&amp;r=g 2x" class="avatar avatar-45 photo" width="45" height="45"><a href="http://superuser.openstack.org/articles/author/superuser/" title="Posts by Superuser" rel="author">Superuser</a></div>						<div class="publication-date">September 16, 2016</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="grid">
+		<div class="col col--2-of-3">
+			<div class="article-body">
+				<p>This article offers a step-by-step guide on setting up a load-balanced service deployed on <a href="https://www.docker.com/">Docker</a> containers using OpenStack VMs. The installation consists of an <a href="https://www.nginx.org/en/">Nginx</a> load balancer and multiple upstream nodes located in two deployments.</p>
+<h2>The issue</h2>
+<p>Let’s imagine that we plan to deploy an application that is expected 
+to be heavily used. The assumption is that a single server can’t handle 
+all incoming requests. We need multiple instances. Moreover the 
+application we launch runs complex calculations that fully utilizes the 
+server for a long time. Therefore the server instance can’t meet 
+expected performance requirements. Or we simply want to deploy an 
+application across multiple instances to ensure that if one instance 
+fails, we still have another instance operating.</p>
+<p>Docker allows us to easily and efficiently run multiple instances of 
+the same service. Docker containers are designed to be able to build up a
+ container very quickly on the VM regardless the underlying layers.</p>
+<p>Nevertheless, such installation allows us to run multiple containers 
+as separate objects. When building such infrastructure, it is desirable 
+to keep all the instances available over one URL. The requirement can be
+ satisfied by the usage of the load balancer node.</p>
+<h2>Our goal</h2>
+<p>Our goal is to set up an installation that has an <strong>Nginx reverse proxy server</strong>
+ at the front and a set of upstream servers handling the requests. The 
+Nginx server is the one directly communicating with clients. Clients 
+don’t receive any information about particular upstream server handling 
+their requests. The responses appear to come directly from the reverse 
+proxy server.</p>
+<p>In addition to this functionality, Nginx has <a href="https://nginx.org/en/docs/http/load_balancing.html#nginx_load_balancing_health_checks">health checks</a>.
+ The checks ensure that nodes behind the load balancer are still 
+operating. In case of one of the servers is not responding, Nginx stops 
+forwarding requests to the failed node.</p>
+<h2>How to build the infrastructure</h2>
+<p>First, we need to create Docker hosts in which we can run the 
+containers. If you are not familiar with Docker, we recommend reading 
+more about launching Docker hosts and containers in our previous article
+ Docker containers on OpenStack VMs first. In this entry, we launch two 
+OpenStack VMs running Ubuntu 14.04 on different deployments. The easiest
+ way to launch the VMs is to use the Dashboard.</p>
+<p style="text-align: center;">The VMs being launched should have a <b>public IP address</b> in order to be directly addressable over the internet. Then, we need to keep the <strong>TCP port 2376</strong> open for communication in order to run with Docker. Additionally, the <strong>TCP port 80 (HTTP)</strong> needs to be open in order to access the load balancer and <strong>ports 8080 and 8081</strong> so that the reverse proxy server can reach the upstream servers that will be accessible on that ports.</p>
+<p>Once the VMs are launched and operating, we make them Docker hosts with <em>docker-machine</em> using the <em>generic driver.</em> We can do so by executing this command from the local environment for both VMs:</p>
+<p><code><br>
+# docker-machine create -d generic \<br>
+--generic-ip-address \<br>
+--generic-ssh-key \<br>
+--generic-ssh-user ubuntu \</code></p>
+<p>After the execution, we have two Docker hosts running. We can check them with the <code>ls</code> command:</p>
+<p><code># docker-machine ls<br>
+NAME ACTIVE DRIVER STATE URL SWARM DOCKER ERRORS<br>
+lb1 - generic Running tcp://1.2.3.4:2376 v1.11.0<br>
+lb2 - generic Running tcp://5.6.7.8:2376 v1.11.0</code></p>
+<p>Now, we can run the containers on the hosts. We launch the upstream nodes and the reverse proxy. In this article, <em>tutum/hello-world</em>
+ was chosen as an image for running upstream nodes because it enables us
+ to differentiate the particular containers from one another. We launch 
+two containers from the hello-world image on both VMs. Moreover, we 
+launch the load balancer on one of the hosts. There is an image called <em>nginx</em> where the Nginx is already running. First on instance <code>lb1</code>:</p>
+<p><code># eval $(docker-machine env lb1)<br>
+# docker run -d --name con1 -p 8080:80 tutum/hello-world<br>
+# docker run -d --name con2 -p 8081:80 tutum/hello-world<br>
+# docker run -d --name nginx1 -p 80:80 nginx</code></p>
+<p>Let’s check the created containers on this host:</p>
+<p><code># docker ps<br>
+CONTAINER ID IMAGE COMMAND CREATED<br>
+STATUS PORTS NAMES<br>
+4a9a75a82ecf nginx "nginx -g 'daemon off" 16 minutes ago<br>
+Up 16 minutes 0.0.0.0:80-&gt;80/tcp, 443/tcp nginx1<br>
+b28434a2e5d4 tutum/hello-world "/bin/sh -c 'php-fpm " 18 minutes ago<br>
+Up 18 minutes 0.0.0.0:8081-&gt;80/tcp con2<br>
+3df4a2e5d86b tutum/hello-world "/bin/sh -c 'php-fpm " 19 minutes ago<br>
+Up 18 minutes 0.0.0.0:8080-&gt;80/tcp con1</code></p>
+<p>And then for the second instance, but this time without launching the Nginx load balancer from the image *nginx*:</p>
+<p><code># eval $(docker-machine env lb2)<br>
+# docker run -d --name con3 -p 8080:80 tutum/hello-world<br>
+# docker run -d --name con4 -p 8081:80 tutum/hello-world<br>
+# docker ps<br>
+CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES<br>
+0a35034ac307 tutum/hello-world "/bin/sh -c 'php-fpm " 15 minutes ago Up 15 minutes 0.0.0.0:8081-&gt;80/tcp con4<br>
+f223f0eed6a0 tutum/hello-world "/bin/sh -c 'php-fpm " 15 minutes ago Up 15 minutes 0.0.0.0:8080-&gt;80/tcp con3</code></p>
+<h2>How to configure the reverse proxy server</h2>
+<p>In the current state we have an Nginx welcome page accessible at 
+1.2.3.4 and four instances of hello-world web application, all with 
+slightly different content at 1.2.3.4:8080, 1.2.3.4:8081, 5.6.7.8:8080, 
+and 5.6.7.8:8081. Now, we have to configure the <em>Nginx</em> node to become a load balancer and a reverse proxy server.</p>
+<p style="text-align: center;">We show only the basic configuration that
+ provides a load balancing where all nodes are equal. There are a lot 
+more possible configurations enabling for example setting priorities 
+(primary and secondary nodes), load balancing methods (round-robin, 
+ip-hash), or setting weights for servers. In order to find out more 
+about load balancing configurations, we recommend you to read the <a href="https://www.nginx.com/resources/admin-guide/load-balancer/" target="_blank">Nginx load balancing guide</a> or the entry <a href="https://www.digitalocean.com/community/tutorials/understanding-the-nginx-configuration-file-structure-and-configuration-contexts" target="_blank">Understanding the Nginx Configuration File Structure and Configuration Contexts</a> at DigitalOcean blog.</p>
+<p>Now, let’s configure the Nginx node to become a load balancer and a 
+reverse proxy server. The configuration file we want to create in the 
+container is <code>/etc/nginx/conf.d/default.conf</code>. We can execute
+ a script on a container using the docker exec command. The convenient 
+way is to establish a new shell session to the container. The <em>nginx</em>image has the Bash at <code>/bin/bash</code></p>
+<p><code># eval $(docker-machine env lb1)<br>
+# docker exec -it nginx1 /bin/bash</code></p>
+<p>Executing this command creates a Bash session so that we can insert the desired content in the configuration file.</p>
+<p><code># echo "upstream servers {<br>
+server 1.2.3.4:8080;<br>
+server 5.6.7.8:8080;<br>
+server 1.2.3.4:8081;<br>
+server 5.6.7.8:8081;<br>
+}</code></p>
+<p># This server accepts all traffic to the port 80 and passes it to the upstream.<br>
+# Notice that the upstream name and the proxy_pass need to match.</p>
+<p>server {<br>
+listen 80;</p>
+<p>location / {<br>
+proxy_pass <a class="vglnk" href="http://servers/" rel="nofollow"><span>http</span><span>://</span><span>servers</span></a>;<br>
+}<br>
+}” &gt; /etc/nginx/conf.d/default.conf</p>
+<p>The <code>upstream servers</code> section specifies four upstream 
+servers that we have created before. They will be accessed over given 
+URLs. Because no other approach was specified, the default <em>round-robin</em> load balancing is used.</p>
+<p>The <code>server</code> section specifies the function of the node as a load balancer specifying the <em>proxy_pass</em> as the group of servers defined above. The server is listening on the port 80.</p>
+<p style="text-align: center;">Be aware that the port 80 does not 
+correspond with the port 1.2.3.4:80 that the server is accessible at. If
+ other ports than -p 80:80 were published while starting the container, 
+it could have changed this directive. For example if -p 8080:8081 was 
+used, then we need to access the port 8081 on 1.2.3.4:8080 and we have 
+to use listen 8081; in the configuration file.</p>
+<p>The configuration file is properly configured now, so we can terminate the Bash session:</p>
+<p><code># exit</code></p>
+<p>Back in our local environment, we restart the container so that the 
+changes to the configuration file will be loaded and thus the node 
+begins to operate as a load balancer.</p>
+<p><code># docker restart nginx1</code></p>
+<p>Review the infrastructure</p>
+<p>The system is running now, so we can check its functionality. We can type <code><a class="vglnk" href="http://1.2.3.4/" rel="nofollow"><span>http</span><span>://</span><span>1</span><span>.</span><span>2</span><span>.</span><span>3</span><span>.</span><span>4</span></a></code>
+ to our browser and see the hello-world app content. When we do it 
+again, the displayed hostname changes. That means that another upstream 
+server has responded to our request.</p>
+<h2>Simulate a failover</h2>
+<p>Let’s test the health checking feature. First, we stop one of the containers:</p>
+<p><code># docker stop con1</code></p>
+<p>Then access <code><a class="vglnk" href="http://1.2.3.4/" rel="nofollow"><span>http</span><span>://</span><span>1</span><span>.</span><span>2</span><span>.</span><span>3</span><span>.</span><span>4</span></a></code>
+ several times and check the hostnames that are being displayed – there 
+are only three different hostnames alternating. This means that the 
+stopped container does not receive the requests.</p>
+<p>Now we start the container again:</p>
+<p><code># docker start con1</code></p>
+<h2>Conclusion</h2>
+<p>Nginx is an efficient way to perform load balancing in order to 
+provide fail-over, increase the availability, extend fleet of the 
+application servers, or to unify the access point to the installation. 
+Docker containers allow quickly spawn multiple instances of the same 
+type on various nodes. Combined together, it is an easy and powerful 
+mechanism for solving similar challenges.</p>
+<p>And after a short delay, you should see four different hosts responding again.<br>
+<em><br>
+This post first appeared on the <a href="https://blog.cloudandheat.com/index.php/en/2016/08/22/load-balanced-service-2/" target="_blank">Cloud&amp;Heat blog</a>. Superuser is always interested in community content, email: editor@superuser.org.</em></p>
+<p><a href="https://flic.kr/p/m7Je1J">Cover Photo</a> // CC <a href="https://creativecommons.org/licenses/by-nc/2.0/">BY NC</a></p>
+<p class="post_tags">Tags: <a href="http://superuser.openstack.org/articles/tag/docker/" rel="tag">Docker</a>, <a href="http://superuser.openstack.org/articles/tag/tutorial/" rel="tag">tutorial</a>, <a href="http://superuser.openstack.org/articles/tag/vms/" rel="tag">VMs</a></p>
+<div class="share-links-wrapper colorized share-links-post share-links-post"><ul><li><a href="https://www.facebook.com/sharer.php?t=How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers&amp;u=http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.facebook.com/sharer.php?t=How to run a load-balanced service in Docker containers&amp;u=http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/', 'facebook');" class="share_links share_facebook" target="_blank"><span class="genericon genericon-facebook-alt"></span><span class="text">facebook</span></a></li><li><a href="https://twitter.com/home?status=How+to+run+a+load-balanced+service+in+Docker+containers+http%3A%2F%2Fsuperuser.openstack.org%2Farticles%2Frun-load-balanced-service-docker-containers-openstack%2F%20via%20@openstack" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://twitter.com/home?status=How+to+run+a+load-balanced+service+in+Docker+containers+http%3A%2F%2Fsuperuser.openstack.org%2Farticles%2Frun-load-balanced-service-docker-containers-openstack%2F via @openstack', 'twitter');" class="share_links share_twitter" target="_blank"><span class="genericon genericon-twitter"></span><span class="text">twitter</span></a></li><li><a href="https://plus.google.com/share?url=http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://plus.google.com/share?url=http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/', 'Google +');" class="share_links share_googleplus" target="_blank"><span class="genericon genericon-googleplus"></span><span class="text">Google +</span></a></li><li><a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/&amp;title=How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers" onclick="__gaTracker('send', 'event', 'outbound-widget', 'https://www.linkedin.com/shareArticle?mini=true&amp;url=http://superuser.openstack.org/articles/run-load-balanced-service-docker-containers-openstack/&amp;title=How to run a load-balanced service in Docker containers', 'linkedin');" class="share_links share_linkedin" target="_blank"><span class="genericon genericon-linkedin"></span><span class="text">linkedin</span></a></li></ul></div>			</div>
+			<div class="comments">
+				
+<div id="disqus_thread"><iframe id="dsq-app7490" name="dsq-app7490" allowtransparency="true" scrolling="no" tabindex="0" title="Disqus" style="width: 1px !important; min-width: 100% !important; border: medium none !important; overflow: hidden !important; height: 839px !important;" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a.html" horizontalscrolling="no" verticalscrolling="no" width="100%" frameborder="0"></iframe></div>
+
+	
+			</div>
+
+		</div>
+		<div class="sidebar col col--1-of-3">
+  <div class="">
+  	<ul class="toplist">
+  		        <li id="post-671" class="mobile-grid articles-list post-671 post type-post status-publish format-standard has-post-thumbnail hentry category-how-to">
+				<div class="mobile-col articles-list__item">
+					<div class="article-card">
+						<a href="http://superuser.openstack.org/articles/making-openstack-production-ready-with-kubernetes-and-openstack-salt-part-2/">
+							<div class="article-cover" style="transform: translate(0px, -8px);">
+								<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/g40ld4jdqeytaqceosuk-387x258.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+								<div class="date">
+									July 8, 2016								</div>
+							</div>
+							<div class="content" style="transform: translate(0px, -16px);">
+								<h3>Making OpenStack Production Ready with Kubernetes and OpenStack-Salt – Part 2</h3>
+							</div>
+							<div class="rider" style="transform: translate(0px, -124px);">
+								<p>Architecture, networking and the two-minute upgrade.</p>
+							</div>
+							<div class="metadata">
+								<div class="author">
+									<div class="author-name"><img alt="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/88dbc80a2053176cd27b2002080a8eed.png" srcset="http://2.gravatar.com/avatar/88dbc80a2053176cd27b2002080a8eed?s=40&amp;d=http%3A%2F%2Fsuperuser.openstack.org%2Fwp-content%2Fthemes%2Fsuperuser%2Fimages%2Fsocial-icon-bracket.png&amp;r=g 2x" class="avatar avatar-20 photo" width="20" height="20">Lachlan Evenson and Jakub Pavlik</div>								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</li>
+                <li id="post-433" class="mobile-grid articles-list post-433 post type-post status-publish format-standard has-post-thumbnail hentry category-news">
+				<div class="mobile-col articles-list__item">
+					<div class="article-card">
+						<a href="http://superuser.openstack.org/articles/how-storage-works-in-containers/">
+							<div class="article-cover" style="transform: translate(0px, -27.5px);">
+								<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/hjrcntv0p8pcid5tn1os-387x258.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+								<div class="date">
+									September 22, 2015								</div>
+							</div>
+							<div class="content" style="transform: translate(0px, -55px);">
+								<h3>How storage works in containers</h3>
+							</div>
+							<div class="rider" style="transform: translate(0px, -188px);">
+								<p>Nick Gerasimatos, senior director of cloud services 
+engineering at FICO, dives into the lack of persistent storage with 
+containers and how Docker volumes and data containers provide a fix. </p>
+							</div>
+							<div class="metadata">
+								<div class="author">
+									<div class="author-name"><img alt="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/3046619905648807c2db1f912eb2719b.png" srcset="http://0.gravatar.com/avatar/3046619905648807c2db1f912eb2719b?s=40&amp;d=http%3A%2F%2Fsuperuser.openstack.org%2Fwp-content%2Fthemes%2Fsuperuser%2Fimages%2Fsocial-icon-bracket.png&amp;r=g 2x" class="avatar avatar-20 photo" width="20" height="20">Nick Gerasimatos</div>								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</li>
+                <li id="post-551" class="mobile-grid articles-list post-551 post type-post status-publish format-standard has-post-thumbnail hentry category-how-to">
+				<div class="mobile-col articles-list__item">
+					<div class="article-card">
+						<a href="http://superuser.openstack.org/articles/how-to-deploy-a-docker-cluster-with-openstack-heat/">
+							<div class="article-cover" style="transform: translate(0px, -29.5px);">
+								<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/rti1f1hpdrwz4vof3k2z-387x258.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+								<div class="date">
+									February 12, 2016								</div>
+							</div>
+							<div class="content" style="transform: translate(0px, -59px);">
+								<h3>How to deploy a Docker cluster with OpenStack Heat</h3>
+							</div>
+							<div class="rider" style="transform: translate(0px, -167px);">
+								<p>This post focuses on an orchestration package for delivering a
+ working Docker Cluster that  leverages external storage from OpenStack 
+Cinder.</p>
+							</div>
+							<div class="metadata">
+								<div class="author">
+									<div class="author-name"><img alt="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/a643a24b6c473a46df10e5794a3617b2.jpeg" srcset="http://1.gravatar.com/avatar/a643a24b6c473a46df10e5794a3617b2?s=40&amp;d=http%3A%2F%2Fsuperuser.openstack.org%2Fwp-content%2Fthemes%2Fsuperuser%2Fimages%2Fsocial-icon-bracket.png&amp;r=g 2x" class="avatar avatar-20 photo" width="20" height="20">Drew Smith</div>								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</li>
+          					<li class="toplist__item">
+				<a class="toplist__link" href="http://superuser.openstack.org/articles/building-openstacks-integration-engine/">
+					<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/6621685383_56f999b4d9_o-97x97.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+					<h4>Building out OpenStack’s integration engine</h4>
+				</a>
+			</li>
+		
+
+
+				<li class="toplist__item">
+				<a class="toplist__link" href="http://superuser.openstack.org/articles/sydney-openstack-project-updates/">
+					<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/Screen-Shot-2017-03-24-at-11.png" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+					<h4>Check out these OpenStack project updates</h4>
+				</a>
+			</li>
+		
+
+
+				<li class="toplist__item large">
+				<a class="toplist__link" href="http://superuser.openstack.org/articles/kubernetes-boring/">
+					<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/nsmail-1-387x110.jpeg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+					<h4>Kubernetes: Why it’s time to be boring</h4>
+				</a>
+			</li>
+		
+
+
+				<li class="toplist__item">
+				<a class="toplist__link" href="http://superuser.openstack.org/articles/containerize-gpu-applications/">
+					<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/16056864658_375961a5f0_k-97x97.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+					<h4>How to containerize GPU applications</h4>
+				</a>
+			</li>
+		
+
+
+				<li id="post-9001" class="mobile-grid articles-list post-9001 post type-post status-publish format-standard has-post-thumbnail hentry category-how-to tag-qinling tag-serverless-architecture">
+				<div class="mobile-col articles-list__item">
+					<div class="article-card">
+						<a href="http://superuser.openstack.org/articles/serverless-architecture-openstack-tutorial/">
+							<div class="article-cover" style="transform: translate(0px, -18.5px);">
+								<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/14234288364_336d700971_k-387x258.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+								<div class="date">
+									November 1, 2017								</div>
+							</div>
+							<div class="content" style="transform: translate(0px, -37px);">
+								<h3>Get started with serverless architecture in OpenStack</h3>
+							</div>
+							<div class="rider" style="transform: translate(0px, -145px);">
+								<p>Get started in under five minutes and just five steps with this tutorial from Lingxian Kong.</p>
+							</div>
+							<div class="metadata">
+								<div class="author">
+									<div class="author-name"><img alt="" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/df4717dffc99e14633358825d9e4f7f2.png" srcset="http://1.gravatar.com/avatar/df4717dffc99e14633358825d9e4f7f2?s=40&amp;d=http%3A%2F%2Fsuperuser.openstack.org%2Fwp-content%2Fthemes%2Fsuperuser%2Fimages%2Fsocial-icon-bracket.png&amp;r=g 2x" class="avatar avatar-20 photo" width="20" height="20">Superuser</div>								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</li>
+		
+
+
+				<li class="toplist__item">
+				<a class="toplist__link" href="http://superuser.openstack.org/articles/avoid-vendor-lock-multi-cloud-deployments/">
+					<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/8229138642_073d7cdd24_z-97x97.jpg" class="cover-image" alt="Build it yourself: How a small team deployed OpenStack">
+					<h4>How to avoid vendor lock-in with multi-cloud deployments</h4>
+				</a>
+			</li>
+		
+
+
+	  	</ul>
+  </div>
+</div>
+	</div>
+</div>		</main><!-- #main -->
+	</div><!-- #primary -->
+
+
+	</div><!-- #content -->
+	<footer class="page-footer">
+		<div class="container">
+			<div class="grid">
+				<div class="col col--2-of-3">
+				
+											<section id="nav_menu-2" class="nav-group widget widget_nav_menu"><h4>Superuser</h4><div class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="http://superuser.openstack.org/section/user-stories/">User Stories</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-8"><a href="http://superuser.openstack.org/section/how-to/">How-To</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-9"><a href="http://superuser.openstack.org/section/superuser-tv/">Superuser TV</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-71"><a href="http://superuser.openstack.org/awards/">Awards</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-74"><a href="http://superuser.openstack.org/about/">About</a></li>
+</ul></div></section><section id="nav_menu-3" class="nav-group widget widget_nav_menu"><h4>Community</h4><div class="menu-community-container"><ul id="menu-community" class="menu"><li id="menu-item-13" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13"><a href="https://www.openstack.org/community/">User Groups</a></li>
+<li id="menu-item-14" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a href="https://www.openstack.org/community/events/">Events</a></li>
+<li id="menu-item-15" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15"><a href="https://www.openstack.org/community/jobs/">Jobs</a></li>
+<li id="menu-item-16" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16"><a href="https://wiki.openstack.org/wiki/How_To_Contribute">Contribute</a></li>
+</ul></div></section><section id="nav_menu-4" class="nav-group widget widget_nav_menu"><h4>User Resources</h4><div class="menu-user-resources-container"><ul id="menu-user-resources" class="menu"><li id="menu-item-17" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-17"><a href="https://www.openstack.org/marketplace">OpenStack Marketplace</a></li>
+<li id="menu-item-18" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-18"><a href="https://www.openstack.org/marketplace/training">OpenStack Training Courses</a></li>
+<li id="menu-item-19" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-19"><a href="http://docs.openstack.org/">OpenStack Documentation</a></li>
+<li id="menu-item-20" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-20"><a href="http://docs.openstack.org/ops/">OpenStack Operations Guide</a></li>
+<li id="menu-item-21" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-21"><a href="http://api.openstack.org/">Application Developer Resources</a></li>
+<li id="menu-item-22" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22"><a href="http://docs.openstack.org/security-guide/content/">OpenStack Security Guide</a></li>
+<li id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-23"><a href="https://ask.openstack.org/en/questions/">OpenStack Questions</a></li>
+</ul></div></section>					
+					<hr>
+					<div class="grid">
+						<div class="col col--1-of-3">
+							<div class="logo">
+								<img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/superuser.svg" class="logomark" alt="&gt; SU">
+							</div>
+						</div>
+						<div class="col col--2-of-3">
+							<div class="about-blurb site-description">
+								<p>OpenStack Superuser is a publication built to chronicle the 
+work of superusers, and their many accomplishments personally, 
+professionally, and organizationally. The emphasis is on a blend of 
+original journalism and user-generated content, ranging from technical 
+to business-level issues with feature stories, case studies, tips and 
+videos for OpenStack cloud architects and administrators.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col col--1-of-3">
+					<div class="character"><img src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/superuser-character.png" alt="Superuser character"></div>
+										<script data-cfasync="false" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/email-decode.js"></script><script type="text/javascript">
+						setTimeout(function(){
+							try {
+								document.querySelector('.character').innerHTML = '<img 
+src="http://superuser.openstack.org/wp-content/themes/superuser/images/superuser-character.png"
+ alt="Superuser character">';
+							}catch(e){}
+						}, 300);
+					</script>
+				</div>
+			</div>
+		</div>
+	</footer>
+</div><!-- #page -->
+
+<style type="text/css">
+	#nprogress .bar {
+	  background: #00abef!important;
+	}
+	#nprogress .peg {
+		box-shadow: 0 0 10px #00abef, 0 0 5px #00abef!important;
+	}
+	#nprogress .spinner-icon {
+		border-top-color: #00abef!important;
+		border-left-color: #00abef!important;	
+	}
+	</style>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/devicepx-jetpack.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/enquire.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/waypoints.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/navigation.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/skip-link-focus-fix.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/application.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/comment-reply.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/wp-embed.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var embedVars = 
+{"disqusConfig":{"platform":"wordpress@4.8.1","language":""},"disqusIdentifier":"2739
+ 
+http:\/\/superuser.openstack.org\/?p=2739","disqusShortname":"openstack-superuser","disqusTitle":"How
+ to run a load-balanced service in Docker 
+containers","disqusUrl":"http:\/\/superuser.openstack.org\/articles\/run-load-balanced-service-docker-containers-openstack\/","options":{"manualSync":false},"postId":"2739"};
+/*
+ ]]> */
+</script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/disqus.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var countVars = {"disqusShortname":"openstack-superuser"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/count.js"></script>
+<script type="text/javascript" src="How%20to%20run%20a%20load-balanced%20service%20in%20Docker%20containers%20-%20OpenStack%20Superuser_files/active.js"></script>
+<script>
+jQuery( document ).ready(function() {
+	jQuery(".article-body iframe").parent('p').css("margin-left", "0px");
+	jQuery(".article-body iframe").parent('p').css("margin-right", "0px");
+});
+</script>
+
+
+
+<div class="swiftype-widget"><div class="autocomplete" style="position: absolute; z-index: 9999; top: 127px; left: 696px; width: 468px; display: none;"><ul></ul></div></div><iframe style="display: none;"></iframe></body></html>
+<!-- Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/
+
+Object Caching 2155/2334 objects using disk
+Page Caching using disk: enhanced
+
+ Served from: www.superuser.openstack.org @ 2017-12-30 12:44:15 by W3 Total Cache -->

@@ -1,0 +1,7 @@
+﻿#lehre {
+	background-color: #f8ff99;
+}
+#lehre > a {
+	color: #06689A !important;
+	font-weight: 500;
+}

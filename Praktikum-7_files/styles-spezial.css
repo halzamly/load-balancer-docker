@@ -1,0 +1,161 @@
+﻿/* inhaltscontainer */
+.inhaltscontainer {
+	background-color: #FCFCFC;
+}
+}
+/* Blaue Tabelle ------------------------------------------------------- */
+.blauetabelle table {
+}
+.blauetabelle th {
+	border: 1px #06689A;
+	border-style: solid;
+	color: #FFFFFF;
+	background-color: #06689A;
+	padding: 0.4em;
+}
+.blauetabelle td {
+	border: 1px #06689A solid;
+	border-style: solid;
+	padding: 0.1em 0.15em 0.1em 0.2em;  /* kleiner Rand um den Text */
+}
+.blauetabelle ul {
+	list-style-type: circle;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+.blauetabelle p {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+/* Leere Tabelle ------------------------------------------------------- */
+.leeretabelle table {
+}
+.leeretabelle th {
+	border: 0px #06689A;
+	border-style: solid;
+	color: #FFFFFF;
+	background-color: #06689A;
+	padding: 0.4em;
+}
+.leeretabelle td {
+	border: 0px #06689A solid;
+	border-style: solid;
+}
+/* Zeitplan  ------------------------------------------------------- */
+.blauetabelle.zeitplan ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.blauetabelle.zeitplan td {
+	padding: 0.4em;
+}
+/* Aufgabenblatt ------------------------------------------------------- */
+.aufgabenblatt h1 {
+	font-size: 2em;
+	margin-top: 0.1em;
+	margin-bottom: 0.8em;
+}
+.aufgabenblatt h2 {
+	font-size: 1.5em;
+	margin-top: 0.1em;
+}
+.aufgabenblatt h3 {
+	font-size: 1.3em;
+	margin-top: 0.1em;
+}
+.aufgabenblatt .kopfzeile {
+	font-size: 1em;
+	margin-top: 0.0em;
+	margin-bottom: 0.8em;
+}
+.aufgabenblatt ul > li {
+	list-style: circle;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.aufgabenblatt ol > li {
+	list-style-type: lower-alpha;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.aufgabenblatt .nachtrag {
+	background-color: #FFFFCC;
+}
+.aufgabenblatt .nachtrag code {
+	background-color: #FFFFCC;
+}
+
+/* Vorlesungsaushang */
+.vorlesungsaushang ul li {
+	list-style: circle;
+	margin-top: 3px;
+	margin-bottom: 3px;
+}
+/* Stil für Karteikarten */
+.inhaltscontainer .card {
+	background-color: #FFF;
+	border: 2px #D5E5EF;
+	border-style: solid;
+}
+.inhaltscontainer .card-header {
+	color: #06689A;
+	font-size: 1em;
+	font-weight: 500;
+	margin-top: 0.0em;
+	margin-bottom: 0.7em;
+}
+/* Abschlussarbeiten */
+.karte-abschlussarbeit {
+	max-width: 900px;
+	margin: 10px;
+	float: left;
+}
+.karte-abschlussarbeit table {
+	font-size: 0.85em;
+}
+.karte-abschlussarbeit th {
+	font-size: 1.2em;
+	font-weight: 500;
+}
+.karte-abschlussarbeit td {
+	padding: 1px;
+	margin: 0px;
+	vertical-align: top;
+	background-color: #F2FBFF;
+	color: #06689A;
+}
+.karte-abschlussarbeit td:first-child {
+	width: 80px;
+}
+/* ------------------------------------------------ */
+/* Ubuntu-Modifizierungen der blauen Tabelle*/
+.befehlstabelle {
+	/*    max-width: 800px;   keine maximale Breite */
+    font-size: 0.85em;
+	margin: 10px;
+	float: left;
+}
+.befehlstabelle th {
+	/*    text-align: center;*/
+    font-size: 1.2em;
+	font-weight: 600;
+}
+.befehlstabelle td {
+	padding: 3px;
+	margin: 1px;
+	vertical-align: top;
+	background-color: #FFFFFF;
+/*  color: #06689A;     keine dunkelblau Schrift */
+}
+.befehlstabelle tr td:nth-child(1) strong {
+	background-color: hsl(120, 100%, 90%);
+	color: #06689A;
+	font-weight: 600;
+}
+.befehlstabelle tr td:nth-child(2) strong {
+	font-weight: 700;
+}
+.befehlstabelle  .gelb {
+	background-color: #FFFFCC;
+}
+

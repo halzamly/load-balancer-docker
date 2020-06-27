@@ -1,0 +1,1 @@
+The upstream servers section specifies four upstream servers that we have created before. They will be accessed over given URLs. Because no other approach was specified, the default round-robin load balancing is used.
